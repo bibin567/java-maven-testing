@@ -35,6 +35,7 @@ jobs:
 
       - name: Deploy website
         run: |
+          echo "${{ secrets.PEM_KEY }}"
           echo "${{ secrets.PEM_KEY }}" > key.pem
           chmod 600 key.pem
           ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ steps.ec2_ip.outputs.ip }} 'sudo yum update -y && sudo yum install -y httpd git && sudo systemctl start httpd && sudo systemctl enable httpd && sudo git clone https://github.com/bibin567/project.git /var/www/html'
