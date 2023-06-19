@@ -21,7 +21,7 @@ jobs:
       - name: Copy Terraform files
         run: |
           shopt -s extglob
-          cp -R !(README.md|main.tf) $GITHUB_WORKSPACE/
+          cp -R !(README\.md|main\.tf) $GITHUB_WORKSPACE/
 
       - name: Initialize Terraform
         run: terraform init
