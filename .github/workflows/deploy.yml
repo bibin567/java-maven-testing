@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  AWS_REGION: us-east-2
+  AWS_REGION: us-east-1
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
@@ -18,11 +18,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Copy Terraform files
-        run: cp -R terraform/* $GITHUB_WORKSPACE/
-
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
+
+      - name: Copy Terraform files
+        run: cp -R ./terraform/* $GITHUB_WORKSPACE/
 
       - name: Initialize Terraform
         run: terraform init
