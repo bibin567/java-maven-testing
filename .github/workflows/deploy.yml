@@ -19,7 +19,9 @@ jobs:
           terraform_version: 1.1.0
 
       - name: Copy Terraform files
-        run: cp -R ./* $GITHUB_WORKSPACE/
+        run: |
+          shopt -s extglob
+          cp -R !(README.md|main.tf) $GITHUB_WORKSPACE/
 
       - name: Initialize Terraform
         run: terraform init
