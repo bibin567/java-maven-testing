@@ -35,11 +35,12 @@ jobs:
 
       - name: Deploy website
         run: |
+          echo "${{ secrets.PEM_KEY }}" > key.pem
+          chmod 600 key.pem
           ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ steps.ec2_ip.outputs.ip }} 'sudo yum update -y && sudo yum install -y httpd git && sudo systemctl start httpd && sudo systemctl enable httpd && sudo git clone https://github.com/bibin567/project.git /var/www/html'
         shell: /usr/bin/bash -e {0}
         env:
           TERRAFORM_CLI_PATH: /home/runner/work/_temp/21913d90-304a-47a3-b53d-112377729480
-          PEM_KEY: ${{ secrets.PEM_KEY }}
 
       - name: Get EC2 Public IP
         id: ec2_ip
