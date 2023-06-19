@@ -10,7 +10,20 @@ resource "aws_instance" "ec2_instance" {
   tags = {
     Name = "My EC2 Instance"
   }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum update -y",
+      "sudo yum install -y httpd git",
+      "sudo systemctl start httpd",
+      "sudo systemctl enable httpd",
+      "sudo git clone https://github.com/bibin567/project.git /var/www/html"
+    ]
+  }
 }
+
+
+
 
 resource "aws_security_group" "ec2_security_group" {
   name        = "my-SG"
