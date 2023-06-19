@@ -2,14 +2,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-variable "pem_key" {
-  description = "Private key for SSH authentication"
-}
-
-variable "pem_key" {
-  description = "Private key for SSH authentication"
-}
-
 resource "aws_instance" "ec2_instance" {
   ami           = "ami-022e1a32d3f742bd8"
   instance_type = "t2.micro"
@@ -25,7 +17,7 @@ resource "aws_instance" "ec2_instance" {
       "sudo yum install -y httpd git",
       "sudo systemctl start httpd",
       "sudo systemctl enable httpd",
-      "echo '${var.pem_key}' > key.pem",
+      "echo '${file("${path.module}/key.pem")}' > key.pem",
       "sudo chmod 400 key.pem",
       "sudo git clone https://github.com/bibin567/project.git /var/www/html"
     ]
@@ -38,6 +30,7 @@ resource "aws_instance" "ec2_instance" {
     }
   }
 }
+
 
 
 resource "aws_security_group" "ec2_security_group" {

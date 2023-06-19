@@ -42,7 +42,6 @@ jobs:
         env:
           TERRAFORM_CLI_PATH: /home/runner/work/_temp/21913d90-304a-47a3-b53d-112377729480
 
-
       - name: Get EC2 Public IP
         id: ec2_ip
         run: echo "::set-output name=ip::$(terraform output -raw public_ip)"
