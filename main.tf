@@ -19,10 +19,15 @@ resource "aws_instance" "ec2_instance" {
       "sudo systemctl enable httpd",
       "sudo git clone https://github.com/bibin567/project.git /var/www/html"
     ]
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file("key.pem")
+      host        = self.public_ip
+    }
   }
 }
-
-
 
 
 resource "aws_security_group" "ec2_security_group" {
