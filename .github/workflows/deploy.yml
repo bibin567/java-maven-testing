@@ -45,8 +45,8 @@ jobs:
           scp -o StrictHostKeyChecking=no -i key.pem -r project/* ec2-user@${{ steps.ec2_ip.outputs.ip }}:/var/www/html/
         shell: /usr/bin/bash -e {0}
         env:
-          PEM_KEY: ${{ secrets.PEM_KEY }}
           TERRAFORM_CLI_PATH: /home/runner/work/_temp/21913d90-304a-47a3-b53d-112377729480
+          PEM_KEY: ${{ secrets.PEM_KEY }}
 
 
       - name: Trigger GitHub Actions workflow
