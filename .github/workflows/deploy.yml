@@ -22,7 +22,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Copy Terraform files
-        run: cp -R ./terraform/* $GITHUB_WORKSPACE/
+        run: cp -R terraform/* $GITHUB_WORKSPACE/
 
       - name: Initialize Terraform
         run: terraform init
@@ -36,8 +36,8 @@ jobs:
 
       - name: Update security group rules
         run: |
-          aws ec2 authorize-security-group-ingress --group-name default --protocol tcp --port 22 --cidr 0.0.0.0/0
-          aws ec2 authorize-security-group-ingress --group-name default --protocol tcp --port 80 --cidr 0.0.0.0/0
+          aws ec2 authorize-security-group-ingress --group-name my-security-group --protocol tcp --port 22 --cidr 0.0.0.0/0
+          aws ec2 authorize-security-group-ingress --group-name my-security-group --protocol tcp --port 80 --cidr 0.0.0.0/0
 
       - name: Deploy website to EC2 instance
         run: |
