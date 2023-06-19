@@ -22,7 +22,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Copy Terraform files
-        run: cp -R ./* $GITHUB_WORKSPACE/
+        run: cp -R !(README.md|main.tf) $GITHUB_WORKSPACE/
 
       - name: Initialize Terraform
         run: terraform init
