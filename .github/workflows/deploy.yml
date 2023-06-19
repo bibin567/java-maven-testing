@@ -42,7 +42,7 @@ jobs:
         run: |
           echo "$PEM_KEY" > key.pem
           chmod 600 key.pem
-          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ steps.ec2_ip.outputs.ip }} 'git clone https://github.com/bibin567/project.git && sudo cp -r project/* /var/www/html/'
+          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ steps.ec2_ip.outputs.ip }} 'git clone https://github.com/bibin567/project.git && sudo cp -r project/. /var/www/html/'
         shell: /usr/bin/bash -e {0}
         env:
           TERRAFORM_CLI_PATH: /home/runner/work/_temp/21913d90-304a-47a3-b53d-112377729480
