@@ -25,8 +25,14 @@ jobs:
       - name: Initialize Terraform
         run: terraform init
 
-      - name: Apply Terraform changes
-        run: terraform apply -auto-approve
+      - name: Apply Terraform
+        run: |
+          terraform apply -auto-approve
+        env:
+          AWS_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
 
       - name: Get EC2 Public IP
         id: ec2_ip
