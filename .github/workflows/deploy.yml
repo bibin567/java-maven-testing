@@ -1,9 +1,14 @@
-name: Deploy Java Webserver to EC2
+name: Deploy EC2 instance with Terraform
 
 on:
   push:
     branches:
       - main
+
+env:
+  AWS_REGION: us-east-1
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
   deploy:
@@ -13,16 +18,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          java-version: 11
-
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v1   #adasdasd
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
 
       - name: Initialize Terraform
-        run: terraform init ./terraform
+        run: terraform init
 
-      - name: Deploy Java Webserver
-        run: terraform apply -auto-approve ./terraform
+      - name: Apply Terraform changes
+        run: terraform apply -auto-approve
+
+      - name: Get EC2 public IP
+        id: get_ip
+        run: echo "::set-output name=ip::$(terraform output public_ip)"
+
+      - name: Update security group rules
+        run: |
+          aws ec2 authorize-security-group-ingress --group-name default --protocol tcp --port 22 --cidr 0.0.0.0/0
+          aws ec2 authorize-security-group-ingress --group-name default --protocol tcp --port 80 --cidr 0.0.0.0/0
+
+      - name: Deploy website to EC2 instance
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@${{ steps.get_ip.outputs.ip }} 'mkdir -p /var/www/html'
+          git clone git@github.com:bibin567/project.git /tmp/website
+          scp -r /tmp/website/* ec2-user@${{ steps.get_ip.outputs.ip }}:/var/www/html/
+
+      - name: Display EC2 instance IP
+        run: |
+          echo "EC2 Public IP: ${{ steps.get_ip.outputs.ip }}"
