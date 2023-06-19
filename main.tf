@@ -14,7 +14,7 @@ resource "aws_instance" "ec2_instance" {
 
 resource "aws_security_group" "ec2_security_group" {
   name        = "my-SG"
-  description = "Allow inbound SSH and HTTP traffic"
+  description = "Alloww inbound SSH and HTTP traffic"
 
   ingress {
     from_port   = 22
